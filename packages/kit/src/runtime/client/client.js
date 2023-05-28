@@ -203,7 +203,7 @@ export function create_client(app, target) {
 
 	/**
 	 * @param {string | URL} url
-	 * @param {{ noScroll?: boolean; replaceState?: boolean; keepFocus?: boolean; state?: any; invalidateAll?: boolean }} opts
+	 * @param {{ noScroll?: boolean; replaceState?: boolean; keepFocus?: boolean; state?: any; invalidateAll?: boolean,displayUrl?: string }} opts
 	 * @param {string[]} redirect_chain
 	 * @param {{}} [nav_token]
 	 */
@@ -214,7 +214,8 @@ export function create_client(app, target) {
 			replaceState = false,
 			keepFocus = false,
 			state = {},
-			invalidateAll = false
+			invalidateAll = false,
+			displayUrl = ''
 		},
 		redirect_chain,
 		nav_token
@@ -230,7 +231,8 @@ export function create_client(app, target) {
 			redirect_chain,
 			details: {
 				state,
-				replaceState
+				replaceState,
+				displayUrl
 			},
 			nav_token,
 			accepted: () => {
@@ -953,6 +955,7 @@ export function create_client(app, target) {
 	 *   details: {
 	 *     replaceState: boolean;
 	 *     state: any;
+	 * 	   displayUrl: string
 	 *   } | null;
 	 *   type: import('@sveltejs/kit').NavigationType;
 	 *   delta?: number;
@@ -1062,6 +1065,9 @@ export function create_client(app, target) {
 			navigation_result.props.page.url.pathname !== url.pathname
 		) {
 			url.pathname = navigation_result.props.page?.url.pathname;
+		}
+		if (detail.displayUrl) {
+			url.pathname = detail.displayUrl
 		}
 
 		if (details) {
