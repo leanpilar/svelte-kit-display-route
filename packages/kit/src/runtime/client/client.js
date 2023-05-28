@@ -1066,8 +1066,8 @@ export function create_client(app, target) {
 		) {
 			url.pathname = navigation_result.props.page?.url.pathname;
 		}
-		if (detail.displayUrl) {
-			url.pathname = detail.displayUrl
+		if (details?.displayUrl) {
+			url.pathname = details.displayUrl
 		}
 
 		if (details) {
