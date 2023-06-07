@@ -955,7 +955,7 @@ export function create_client(app, target) {
 	 *   details: {
 	 *     replaceState: boolean;
 	 *     state: any;
-	 * 	   displayUrl: string
+	 * 	   displayUrl: URL | null
 	 *   } | null;
 	 *   type: import('@sveltejs/kit').NavigationType;
 	 *   delta?: number;
@@ -1066,14 +1066,11 @@ export function create_client(app, target) {
 		) {
 			url.pathname = navigation_result.props.page?.url.pathname;
 		}
-		if (details?.displayUrl) {
-			url.pathname = details.displayUrl
-		}
 
 		if (details) {
 			const change = details.replaceState ? 0 : 1;
 			details.state[INDEX_KEY] = current_history_index += change;
-			history[details.replaceState ? 'replaceState' : 'pushState'](details.state, '', url);
+			history[details.replaceState ? 'replaceState' : 'pushState'](details.state, '',details.displayUrl || url);
 
 			if (!details.replaceState) {
 				// if we navigated back, then pushed a new state, we can
